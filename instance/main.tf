@@ -6,7 +6,7 @@ resource "google_compute_disk" "additional_disk" {
   name    = "minecraft-disk"
   type    = "pd-standard"
   size    = 50 # Disk size in GB
-  zone    = "us-central1-a"
+  zone    = "${var.instance_zone}"
 }
 
 resource "google_compute_instance" "minecraft_server" {

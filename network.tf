@@ -23,7 +23,16 @@ resource "google_compute_firewall" "allow-client-traffic" {
 module "minecraft-server-vm" {
   source           = "./instance"
   instance_name    = "mynet-vm-1"
-  instance_zone    = "Zone"
+  instance_zone    = "us-east1-a"
   instance_type     = "e2-micro"
   instance_network = google_compute_network.mynetwork.self_link
+}
+
+resource "google_storage_bucket" "gcs_backup_bucket" {
+  name           = "potato-swirl-landbridge-deaf"
+  location       = "US"
+  storage_class  = "STANDARD"
+  versioning {
+    enabled = true
+  }
 }
