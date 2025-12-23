@@ -2,9 +2,11 @@ resource "google_compute_address" "static" {
   name = "ipv4-address"
 }
 
-resource "google_compute_attached_disk" "default" {
-  disk     = google_compute_disk.default.id
-  instance = google_compute_instance.default.id
+resource "google_compute_disk" "additional_disk" {
+  name    = "minecraft-disk"
+  type    = "pd-standard"
+  size    = 50 # Disk size in GB
+  zone    = "us-central1-a"
 }
 
 resource "google_compute_instance" "minecraft_server" {
@@ -23,7 +25,8 @@ resource "google_compute_instance" "minecraft_server" {
       nat_ip = google_compute_address.static.address
     }
   }
-  lifecycle {
-    ignore_changes = google_compute_attached_disk.static.self_link
+attached_disk {
+    source      = google_compute_disk.additional_disk.self_link
+    mode        = "READ_WRITE"
   }
 }
