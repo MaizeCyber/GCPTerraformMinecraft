@@ -12,6 +12,10 @@ sed -i '$c\eula=true' eula.txt
 sudo apt-get install -y screen
 sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
 sudo screen -r mcs
+
+curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/backup_script_content" \
+  -H "Metadata-Flavor: Google" > /home/minecraft/backup.sh
+
 sudo chmod 755 /home/minecraft/backup.sh
 . /home/minecraft/backup.sh
 # Source - https://stackoverflow.com/a
