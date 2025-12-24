@@ -12,6 +12,8 @@ sed -i '$c\eula=true' eula.txt
 sudo apt-get install -y screen
 sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
 sudo screen -r mcs
+sudo chmod 755 /home/minecraft/backup.sh
+. /home/minecraft/backup.sh
 # Source - https://stackoverflow.com/a
 # Posted by dogbane, modified by community. See post 'Timeline' for change history
 # Retrieved 2025-12-24, License - CC BY-SA 3.0
