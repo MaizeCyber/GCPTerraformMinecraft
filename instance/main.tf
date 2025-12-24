@@ -25,13 +25,13 @@ resource "google_compute_instance" "minecraft_server" {
       nat_ip = google_compute_address.static.address
     }
   }
-attached_disk {
+  attached_disk {
     source      = google_compute_disk.additional_disk.self_link
     mode        = "READ_WRITE"
-
-metadata_startup_script = file("${path.module}/startup.sh")
+  }
+  metadata_startup_script = file("${path.module}/startup.sh")
   
-metadata = {
+  metadata = {
     shutdown-script = file("${path.module}/shutdown.sh")
     backup_script_content = file("${path.module}/backup.sh")
   }
