@@ -51,22 +51,18 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
-
-    permissions:
-      contents: read
-      id-token: write
-
+      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
-
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -95,9 +91,16 @@ jobs:
     # Runs a validation check on terraform code
     - name: Terraform Validate
       run: terraform validate
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
+    
+    # This job only runs if the commit message contains "#deploy"
+    - name: Terraform Apply
+      if: contains(github.event.head_commit.message, '#deploy')
+
+      run: terraform apply -auto-approve -input=false
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
