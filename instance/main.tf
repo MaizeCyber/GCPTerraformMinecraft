@@ -4,7 +4,7 @@ resource "google_compute_address" "static" {
 
 resource "google_compute_disk" "additional_disk" {
   name    = "minecraft-disk"
-  type    = "pd-standard"
+  type    = "pd-ssd"
   size    = 50 # Disk size in GB
   zone    = "${var.instance_zone}"
 }
@@ -14,6 +14,9 @@ resource "google_compute_instance" "minecraft_server" {
   # RESOURCE properties go here
   zone         = "${var.instance_zone}"
   machine_type = "${var.instance_type}"
+
+  tags = ["minecraft-server"]
+
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
