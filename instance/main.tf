@@ -7,7 +7,6 @@ resource "google_compute_disk" "additional_disk" {
   type    = "pd-ssd"
   size    = 50 # Disk size in GB
   zone    = var.instance_zone
-  deletion_protection = true
 }
 
 resource "google_compute_instance" "minecraft_server" {
