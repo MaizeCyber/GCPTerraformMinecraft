@@ -40,6 +40,7 @@ resource "google_storage_bucket" "gcs_terraform_backend" {
 }
 
 resource "google_service_account" "minecraft_sa" {
+  project = "minecraftserver-482021"
   account_id   = "minecraft-server-sa"
   display_name = "Minecraft Server Service Account"
 }
