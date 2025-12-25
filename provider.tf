@@ -3,3 +3,10 @@ provider "google" {
   region      = "us-east4"
   zone        = "us-east4-a"
 }
+
+terraform {
+  backend "gcs" {
+    bucket  = "soup-burrata-cool-summer"
+    prefix  = "terraform/state"
+  }
+}
