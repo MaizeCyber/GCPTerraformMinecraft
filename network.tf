@@ -51,7 +51,7 @@ resource "google_project_iam_member" "logging_writer" {
 
 resource "google_storage_bucket_iam_member" "backup_writer" {
   bucket = google_storage_bucket.gcs_backup_bucket.name
-  role   = "roles/storage.objectCreator"
+  role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_service_account.minecraft_sa.email}"
 }
 

@@ -12,7 +12,6 @@ sudo wget https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec34793
 echo "eula=true" > eula.txt
 sudo apt-get install -y screen
 sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
-sudo screen -r mcs
 
 curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/backup_script_content" \
   -H "Metadata-Flavor: Google" > /home/minecraft/backup.sh
@@ -24,7 +23,7 @@ sudo chmod 755 /home/minecraft/backup.sh
 # Retrieved 2025-12-24, License - CC BY-SA 3.0
 
 #write out current crontab
-crontab -l > mycron
+crontab -l > mycron 2>/dev/null || touch mycron
 #echo new cron into cron file
 echo "0 0 * * * /home/minecraft/backup.sh" >> mycron
 #install new cron file
