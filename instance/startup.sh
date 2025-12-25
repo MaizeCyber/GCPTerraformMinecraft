@@ -8,7 +8,7 @@ cd /home/minecraft
 sudo apt-get update
 sudo apt-get install -y default-jre-headless
 sudo apt-get install wget
-sudo wget https://launcher.mojang.com/v1/objects/d0d0fe2b1dc6ab4c65554cb734270872b72dadd6/server.jar
+sudo wget https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
 echo "eula=true" > eula.txt
 sudo apt-get install -y screen
 sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
