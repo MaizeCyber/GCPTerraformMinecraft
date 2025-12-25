@@ -19,15 +19,6 @@ resource "google_compute_firewall" "allow-client-traffic" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-# Create the mynet-vm-1 instance
-module "minecraft-server-vm" {
-  source           = "./instance"
-  instance_name    = "minecraft-server-1"
-  instance_zone    = "us-east4-a"
-  instance_type     = "e2-medium"
-  instance_network = google_compute_network.mynetwork.self_link
-}
-
 resource "google_storage_bucket" "gcs_backup_bucket" {
   name           = "potato-swirl-landbridge-deaf"
   location       = "US"
@@ -36,3 +27,25 @@ resource "google_storage_bucket" "gcs_backup_bucket" {
     enabled = true
   }
 }
+
+resource "google_service_account" "minecraft_sa" {
+  account_id   = "minecraft-server-sa"
+  display_name = "Minecraft Server Service Account"
+}
+
+resource "google_storage_bucket_iam_member" "backup_writer" {
+  bucket = google_storage_bucket.gcs_backup_bucket.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${google_service_account.minecraft_sa.email}"
+}
+
+module "minecraft-server-vm" {
+  source           = "./instance"
+  instance_name    = "minecraft-server-1"
+  instance_zone    = "us-east4-a"
+  instance_type     = "e2-medium"
+  instance_network = google_compute_network.mynetwork.self_link
+  sa_email = google_service_account.minecraft_sa.email
+}
+
+
