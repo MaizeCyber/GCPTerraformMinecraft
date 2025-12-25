@@ -33,7 +33,12 @@ resource "google_compute_instance" "minecraft_server" {
     mode        = "READ_WRITE"
   }
   metadata_startup_script = file("${path.module}/startup.sh")
-  
+
+  service_account {
+    email  = var.sa_email
+    scopes = ["cloud-platform"]
+  }
+
   metadata = {
     shutdown-script = file("${path.module}/shutdown.sh")
     backup_script_content = file("${path.module}/backup.sh")
