@@ -9,6 +9,7 @@ resource "google_compute_firewall" "allow-client-traffic" {
   name = "allow-client-traffic"
   # RESOURCE properties go here
   network = google_compute_network.mynetwork.self_link
+  target_tags = ["minecraft-server"]
   allow {
     protocol = "tcp"
     ports    = ["25565"]
