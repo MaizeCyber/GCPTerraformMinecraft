@@ -3,6 +3,8 @@ Terraform configuration riles to deploy a Minecraft Server in Google Cloud.
 
 ## Specs
 Storage: 50 GB SSD Persistent Disk
+Zone: us-east4
+Machine Type: e2-medium
 Encryption: Google Managed Encryptions
 
 ## Networking
