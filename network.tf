@@ -29,6 +29,16 @@ resource "google_storage_bucket" "gcs_backup_bucket" {
   }
 }
 
+resource "google_storage_bucket" "gcs_terraform_backend" {
+  name           = "soup-burrata-cool-summer"
+  location       = "US"
+  storage_class  = "STANDARD"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = false
+  }
+}
+
 resource "google_service_account" "minecraft_sa" {
   account_id   = "minecraft-server-sa"
   display_name = "Minecraft Server Service Account"
