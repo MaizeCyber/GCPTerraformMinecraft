@@ -13,7 +13,6 @@ Default Network interface
 Firewall Rule which allows 25565 traffic
 
 ## Security
-Set Access for Each API
 Storage: RW
 
 ## Backups

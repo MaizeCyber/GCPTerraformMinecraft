@@ -27,6 +27,14 @@ resource "google_storage_bucket" "gcs_backup_bucket" {
   versioning {
     enabled = true
   }
+  lifecycle_rule {
+    condition {
+      numNewerVersions = 3
+    }
+    action {
+      type = "Delete"
+    }
+  }
 }
 
 resource "google_storage_bucket" "gcs_terraform_backend" {
