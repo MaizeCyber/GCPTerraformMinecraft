@@ -31,24 +31,4 @@ echo "0 0 * * * /home/minecraft/backup.sh" >> mycron
 crontab mycron
 rm mycron
 
-# Install the Google Ops Agent
-curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
-sudo bash add-google-cloud-ops-agent-repo.sh --also-install
-
-# Create a configuration to watch the Minecraft log file
-sudo tee /etc/google-cloud-ops-agent/config.yaml > /dev/null <<EOF
-logging:
-  receivers:
-    minecraft_logs:
-      type: files
-      include_paths:
-        - /home/minecraft/logs/latest.log
-  service:
-    pipelines:
-      default_pipeline:
-        receivers: [minecraft_logs]
-EOF
-
-# Restart the agent to apply changes
-sudo service google-cloud-ops-agent restart
 
