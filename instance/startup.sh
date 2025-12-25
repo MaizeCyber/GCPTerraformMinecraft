@@ -6,8 +6,15 @@ fi
 sudo mount -o discard,defaults /dev/disk/by-id/google-minecraft-disk /home/minecraft
 cd /home/minecraft
 sudo apt-get update
-sudo apt-get install -y default-jre-headless
 sudo apt-get install wget
+
+sudo apt-get install -y wget ca-certificates
+
+wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+sudo apt-get install -y ./jdk-21_linux-x64_bin.deb
+
+java -version
+
 sudo wget https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
 echo "eula=true" > eula.txt
 sudo apt-get install -y screen
