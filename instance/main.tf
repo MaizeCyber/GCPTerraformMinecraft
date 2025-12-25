@@ -6,14 +6,15 @@ resource "google_compute_disk" "additional_disk" {
   name    = "minecraft-disk"
   type    = "pd-ssd"
   size    = 50 # Disk size in GB
-  zone    = "${var.instance_zone}"
+  zone    = var.instance_zone
+  deletion_protection = true
 }
 
 resource "google_compute_instance" "minecraft_server" {
-  name = "${var.instance_name}"
+  name = var.instance_name
   # RESOURCE properties go here
-  zone         = "${var.instance_zone}"
-  machine_type = "${var.instance_type}"
+  zone         = var.instance_zone
+  machine_type = var.instance_type
 
   tags = ["minecraft-server"]
 
@@ -23,7 +24,7 @@ resource "google_compute_instance" "minecraft_server" {
       }
   }
   network_interface {
-    network = "${var.instance_network}"
+    network = var.instance_network
     access_config {
       nat_ip = google_compute_address.static.address
     }
