@@ -11,7 +11,7 @@ resource "google_compute_firewall" "allow-client-traffic" {
   network = google_compute_network.mynetwork.self_link
   allow {
     protocol = "tcp"
-    ports    = ["22", "25565"]
+    ports    = ["25565"]
     }
   allow {
     protocol = "icmp"
@@ -22,9 +22,9 @@ resource "google_compute_firewall" "allow-client-traffic" {
 # Create the mynet-vm-1 instance
 module "minecraft-server-vm" {
   source           = "./instance"
-  instance_name    = "mynet-vm-1"
-  instance_zone    = "us-east1-a"
-  instance_type     = "e2-micro"
+  instance_name    = "minecraft-server-1"
+  instance_zone    = "us-east4-a"
+  instance_type     = "e2-medium"
   instance_network = google_compute_network.mynetwork.self_link
 }
 
