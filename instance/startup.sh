@@ -18,8 +18,8 @@ java -version
 sudo wget https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
 echo "eula=true" > eula.txt
 sudo apt-get install -y screen
-#sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
-java -Xmx1024M -Xms1024M -jar server.jar nogui
+
+sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
 
 curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/backup_script_content" \
   -H "Metadata-Flavor: Google" > /home/minecraft/backup.sh
