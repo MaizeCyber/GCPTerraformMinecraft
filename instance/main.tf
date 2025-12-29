@@ -16,6 +16,7 @@ resource "google_compute_instance" "minecraft_server" {
   machine_type = var.instance_type
 
   tags = ["minecraft-server"]
+  allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {
