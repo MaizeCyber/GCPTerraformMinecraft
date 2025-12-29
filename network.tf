@@ -20,6 +20,21 @@ resource "google_compute_firewall" "allow-client-traffic" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "allow-ssh-traffic" {
+  name = "allow-ssh-traffic"
+  # RESOURCE properties go here
+  network = google_compute_network.mynetwork.self_link
+  target_tags = ["minecraft-server"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+    }
+  allow {
+    protocol = "icmp"
+    }
+  source_ranges = ["35.235.240.0/20"]
+}
+
 resource "google_storage_bucket" "gcs_backup_bucket" {
   name           = "potato-swirl-landbridge-deaf"
   location       = "US"
