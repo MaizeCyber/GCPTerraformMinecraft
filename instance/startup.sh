@@ -1,7 +1,20 @@
-#!/bin/bash 
+#!/bin/bash
+
+echo "Waiting for apt locks to be released..."
+while fuser /var/lib/dpkg/lock-frontend /var/lib/apt/lists/lock /var/cache/apt/archives/lock >/dev/null 2>&1; do
+    echo "System updates are in progress. Waiting 5 seconds..."
+    sleep 5
+done
+echo "Apt is free. Proceeding with installation."
+# Exit immediately if a command fails
+set -e
+
+#!/bin/bash
+set -e
+
 sudo mkdir -p /home/minecraft
 
-while [ ! -b "$/dev/disk/by-id/google-minecraft-disk" ]; do
+while [ ! -b "/dev/disk/by-id/google-minecraft-disk" ]; do
   echo "Waiting for persistent disk to attach..."
   sleep 2
 done
