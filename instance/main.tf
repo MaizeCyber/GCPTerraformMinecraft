@@ -30,6 +30,7 @@ resource "google_compute_instance" "minecraft_server" {
   }
   attached_disk {
     source      = google_compute_disk.additional_disk.self_link
+    device_name = google_compute_disk.additional_disk.name
     mode        = "READ_WRITE"
   }
   metadata_startup_script = file("${path.module}/startup.sh")
