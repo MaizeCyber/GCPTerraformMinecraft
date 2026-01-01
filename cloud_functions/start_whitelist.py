@@ -79,8 +79,24 @@ def start_instance(project_id: str = project_id, zone: str = zone, instance_name
 
     wait_for_extended_operation(operation, "instance start")
 
+def get_instance(project_id: str = project_id, zone: str = zone, instance_name: str = instance_name) -> None:
+    """
+    Starts a stopped Google Compute Engine instance (with unencrypted disks).
+    Args:
+        project_id: project ID or project number of the Cloud project your instance belongs to.
+        zone: name of the zone your instance belongs to.
+        instance_name: name of the instance your want to start.
+    """
+    instance_client = compute_v1.InstancesClient()
+
+    operation = instance_client.get(
+        project=project_id, zone=zone, instance=instance_name
+    )
+
+    wait_for_extended_operation(operation, "instance start")
+
 def create_firewall_rule(
-    project_id: str = project_id, firewall_rule_name: str, network: str = f"global/networks/{network_name}", visitor_ip: str
+    visitor_ip: str, firewall_rule_name: str, project_id: str = project_id, network: str = f"global/networks/{network_name}"
 ) -> compute_v1.Firewall:
     """
     Creates a simple firewall rule allowing for incoming HTTP and HTTPS access from the entire Internet.
@@ -92,10 +108,10 @@ def create_firewall_rule(
             * https://www.googleapis.com/compute/v1/projects/{project_id}/global/networks/{network}
             * projects/{project_id}/global/networks/{network}
             * global/networks/{network}
+        visitor_ip: IP address to be whitelisted
 
     Returns:
-        A Firewall object.
-        :param visitor_ip:
+        compute_v1.Firewall: A Firewall object.
     """
     firewall_rule = compute_v1.Firewall()
     firewall_rule.name = firewall_rule_name
@@ -118,7 +134,7 @@ def create_firewall_rule(
     # the default will be applied to the new rule. If you want to create a rule that
     # has priority == 0, you need to explicitly set it so:
 
-    firewall_rule.priority = 0
+    # firewall_rule.priority = 0
 
     firewall_client = compute_v1.FirewallsClient()
     operation = firewall_client.insert(
