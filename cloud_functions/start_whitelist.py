@@ -1,7 +1,12 @@
 from __future__ import annotations
+
+import json
 import os
 import sys
 from typing import Any
+import proto
+
+import threading
 
 from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
@@ -15,69 +20,6 @@ project_id = os.environ['PROJECT_NAME']
 zone = os.environ['PROJECT_ZONE']
 instance_name = os.environ['INSTANCE_NAME']
 network_name = os.environ['NETWORK_NAME']
-
-def wait_for_extended_operation(
-    operation: ExtendedOperation, verbose_name: str = "operation", timeout: int = 300
-) -> Any:
-    """
-    Waits for the extended (long-running) operation to complete.
-
-    If the operation is successful, it will return its result.
-    If the operation ends with an error, an exception will be raised.
-    If there were any warnings during the execution of the operation
-    they will be printed to sys.stderr.
-
-    Args:
-        operation: a long-running operation you want to wait on.
-        verbose_name: (optional) a more verbose name of the operation,
-            used only during error and warning reporting.
-        timeout: how long (in seconds) to wait for operation to finish.
-            If None, wait indefinitely.
-
-    Returns:
-        Whatever the operation.result() returns.
-
-    Raises:
-        This method will raise the exception received from `operation.exception()`
-        or RuntimeError if there is no exception set, but there is an `error_code`
-        set for the `operation`.
-
-        In case of an operation taking longer than `timeout` seconds to complete,
-        a `concurrent.futures.TimeoutError` will be raised.
-    """
-    result = operation.result(timeout=timeout)
-
-    if operation.error_code:
-        print(
-            f"Error during {verbose_name}: [Code: {operation.error_code}]: {operation.error_message}",
-            file=sys.stderr,
-            flush=True,
-        )
-        print(f"Operation ID: {operation.name}", file=sys.stderr, flush=True)
-        raise operation.exception() or RuntimeError(operation.error_message)
-
-    if operation.warnings:
-        print(f"Warnings during {verbose_name}:\n", file=sys.stderr, flush=True)
-        for warning in operation.warnings:
-            print(f" - {warning.code}: {warning.message}", file=sys.stderr, flush=True)
-
-    return result
-
-def start_instance(project_id: str = project_id, zone: str = zone, instance_name: str = instance_name) -> None:
-    """
-    Starts a stopped Google Compute Engine instance (with unencrypted disks).
-    Args:
-        project_id: project ID or project number of the Cloud project your instance belongs to.
-        zone: name of the zone your instance belongs to.
-        instance_name: name of the instance your want to start.
-    """
-    instance_client = compute_v1.InstancesClient()
-
-    operation = instance_client.start(
-        project=project_id, zone=zone, instance=instance_name
-    )
-
-    wait_for_extended_operation(operation, "instance start")
 
 def get_instance(project_id: str = project_id, zone: str = zone, instance_name: str = instance_name) -> None:
     """
@@ -93,10 +35,33 @@ def get_instance(project_id: str = project_id, zone: str = zone, instance_name: 
         project=project_id, zone=zone, instance=instance_name
     )
 
-    wait_for_extended_operation(operation, "instance start")
+    status_dict = json.loads(proto.Message.to_json(operation))
+    return (status_dict)
+
+def send_instance_start():
+    instance_client = compute_v1.InstancesClient()
+    instance_client.start(project=project_id, zone=zone, instance=instance_name)
+    return 0
+
+def start_instance() -> None:
+    """
+    Starts a stopped Google Compute Engine instance (with unencrypted disks).
+    """
+    instance_client = compute_v1.InstancesClient()
+    try:
+        status = get_instance()
+        if status.get('status') == "TERMINATED":
+            thread = threading.Thread(target=send_instance_start)
+            thread.start()
+            return "Server Starting!"
+        else:
+            return f"Current server status: {status.get('status')}"
+    except:
+        return "Error: Server status could not be found"
 
 def create_firewall_rule(
-    visitor_ip: str, firewall_rule_name: str, project_id: str = project_id, network: str = f"global/networks/{network_name}"
+        visitor_ip: str, firewall_rule_name: str, project_id: str = project_id,
+        network: str = f"global/networks/{network_name}"
 ) -> compute_v1.Firewall:
     """
     Creates a simple firewall rule allowing for incoming HTTP and HTTPS access from the entire Internet.
@@ -141,9 +106,10 @@ def create_firewall_rule(
         project=project_id, firewall_resource=firewall_rule
     )
 
-    wait_for_extended_operation(operation, "firewall rule creation")
+    print(operation)
 
     return firewall_client.get(project=project_id, firewall=firewall_rule_name)
+
 
 app = Flask(__name__)
 
@@ -155,14 +121,12 @@ def server_information():
     else:
         # Fallback for local development
         visitor_ip = request.remote_addr
-
-    start_instance()
-
-    create_firewall_rule(firewall_rule_name=f"client-allow-{visitor_ip}", visitor_ip=visitor_ip)
-
+    ip_string = visitor_ip.replace(".","-")
+    create_firewall_rule(firewall_rule_name=f"client-allow-{ip_string}", visitor_ip=visitor_ip)
     print(f"Logged Visitor IP: {visitor_ip}")
 
-    return f"<p>Success! Server started if stopped. The IP of the server is {server_ip}</p>"
+    server_status = start_instance()
+    return f"<p>IP whitelisted. {server_status}</p>"
 
 if __name__ == "__main__":
     # Cloud Run provides the PORT environment variable
