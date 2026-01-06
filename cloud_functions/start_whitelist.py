@@ -59,6 +59,7 @@ def start_instance() -> None:
     except:
         return "Error: Server status could not be found"
 
+
 def create_firewall_rule(
         visitor_ip: str, firewall_rule_name: str, project_id: str = project_id,
         network: str = f"global/networks/{network_name}"
@@ -122,7 +123,10 @@ def server_information():
         # Fallback for local development
         visitor_ip = request.remote_addr
     ip_string = visitor_ip.replace(".","-")
-    create_firewall_rule(firewall_rule_name=f"client-allow-{ip_string}", visitor_ip=visitor_ip)
+    try:
+        create_firewall_rule(firewall_rule_name=f"client-allow-{ip_string}", visitor_ip=visitor_ip)
+    except Exception as e:
+        print(f"Firewall rule creation failed: {e}")
     print(f"Logged Visitor IP: {visitor_ip}")
 
     server_status = start_instance()

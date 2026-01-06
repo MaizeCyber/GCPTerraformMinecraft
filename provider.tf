@@ -10,3 +10,8 @@ terraform {
     prefix  = "terraform/state"
   }
 }
+
+resource "google_project_service" "cloud_compute_api" {
+  project = "minecraftserver-482021"
+  service   = "cloudbuild.googleapis.com"
+}
