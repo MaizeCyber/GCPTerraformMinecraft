@@ -1,4 +1,4 @@
-resource "google_cloud_run_v2_service" "ankibot" {
+resource "google_cloud_run_v2_service" "mc_join_service" {
   name     = var.run_name
   location = var.run_region
   ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"

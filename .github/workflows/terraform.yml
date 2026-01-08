@@ -77,8 +77,9 @@ jobs:
       with:
         project_id: ${{ secrets.PROJECT_NAME }}
         workload_identity_provider: 'projects/334515927364/locations/global/workloadIdentityPools/gh-action-minecraft-pool/providers/github-provider'
+        service_account: 'github-deployer@minecraftserver-482021.iam.gserviceaccount.com'
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:

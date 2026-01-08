@@ -38,11 +38,11 @@ module "join-url-service" {
 }
 
 resource "google_service_account" "cloud_run_sa" {
-  account_id   = "anki-server-sa"
-  display_name = "Anki Server Service Account"
+  account_id   = "service-join-sa"
+  display_name = "MC Server Join Service"
 }
 
-resource "google_project_iam_member" "anki_sa_run_admin" {
+resource "google_project_iam_member" "cloud_sa_run_admin" {
   project = var.project_name
   role    = "roles/run.admin"
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
