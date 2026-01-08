@@ -4,7 +4,7 @@ resource "google_service_account" "minecraft_sa" {
 }
 
 resource "google_project_iam_member" "logging_writer" {
-  project = "minecraftserver-482021"
+  project = var.project_name
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.minecraft_sa.email}"
 }
@@ -18,10 +18,34 @@ resource "google_storage_bucket_iam_member" "backup_writer" {
 module "minecraft-server-vm" {
   source           = "./instance"
   instance_name    = "minecraft-server-1"
-  instance_zone    = "us-east4-a"
+  instance_zone    = var.project_zone
   instance_type     = "e2-medium"
   instance_network = google_compute_network.mynetwork.self_link
   sa_email = google_service_account.minecraft_sa.email
+}
+
+module "join-url-service" {
+  source           = "./cloud_run"
+  run_name         = "join-url-1"
+  run_region       = var.project_region
+  sa_email         = google_service_account.cloud_run_sa.email
+  container_name   = "docker.io/maizecyber/MCServerJoinLink:gcp"
+  instance_name    = "minecraft-server-1"
+  network_name     = "mynetwork"
+  project_id       = var.project_name
+  project_zone     = var.project_zone
+  server_ip        = module.minecraft-server-vm.external_ip
+}
+
+resource "google_service_account" "cloud_run_sa" {
+  account_id   = "anki-server-sa"
+  display_name = "Anki Server Service Account"
+}
+
+resource "google_project_iam_member" "anki_sa_run_admin" {
+  project = var.project_name
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
 

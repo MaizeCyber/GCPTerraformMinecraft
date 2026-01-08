@@ -2,16 +2,12 @@ from __future__ import annotations
 
 import json
 import os
-import sys
-from typing import Any
 import proto
 
 import threading
 
-from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
 
-from flask import abort
 from flask import request
 from flask import Flask
 

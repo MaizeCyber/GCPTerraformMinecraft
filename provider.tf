@@ -1,7 +1,7 @@
 provider "google" {
-  project     = "minecraftserver-482021"
-  region      = "us-east4"
-  zone        = "us-east4-a"
+  project     = var.project_name
+  region      = var.project_region
+  zone        = var.project_zone
 }
 
 terraform {
@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-resource "google_project_service" "cloud_compute_api" {
-  project = "minecraftserver-482021"
+resource "google_project_service" "cloud_build_api" {
+  project = var.project_name
   service   = "cloudbuild.googleapis.com"
 }

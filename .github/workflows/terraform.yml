@@ -58,7 +58,11 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
-      
+    env:
+      TF_VAR_project_name: ${{ secrets.PROJECT_NAME }}
+      TF_VAR_project_region: ${{ secrets.PROJECT_REGION }}
+      TF_VAR_project_zone: ${{ secrets.PROJECT_ZONE }}
+
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
@@ -71,7 +75,7 @@ jobs:
 
     - uses: 'google-github-actions/auth@v3'
       with:
-        project_id: 'minecraftserver-482021'
+        project_id: ${{ secrets.PROJECT_NAME }}
         workload_identity_provider: 'projects/334515927364/locations/global/workloadIdentityPools/gh-action-minecraft-pool/providers/github-provider'
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
