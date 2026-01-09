@@ -9,3 +9,8 @@ variable "project_region" {
 variable "project_zone" {
   type    = string
 }
+
+variable "version_trigger" {
+  type    = string
+  default = "1"
+}

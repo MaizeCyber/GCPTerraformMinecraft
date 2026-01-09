@@ -23,6 +23,11 @@ variable "instance_name" {
   description = "Name of the minecraft server instance"
 }
 
+variable "version_trigger" {
+  type        = string
+  description = "Passed from GitHub Run ID to force secret updates"
+}
+
 variable "network_name" {
   type        = string
   description = "Name of the VPC network the minecraft server lives on"

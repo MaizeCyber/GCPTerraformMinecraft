@@ -7,6 +7,9 @@ resource "google_cloud_run_v2_service" "mc_join_service" {
 
   template {
     service_account = var.sa_email
+    labels = {
+      "deployment_version" = var.version_trigger
+    }
     containers {
       image = var.container_name
       ports {

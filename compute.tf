@@ -35,6 +35,7 @@ module "join-url-service" {
   project_id       = var.project_name
   project_zone     = var.project_zone
   server_ip        = module.minecraft-server-vm.external_ip
+  version_trigger    = var.version_trigger
 }
 
 resource "google_service_account" "cloud_run_sa" {
