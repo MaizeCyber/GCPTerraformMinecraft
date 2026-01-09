@@ -6,12 +6,10 @@ while fuser /var/lib/dpkg/lock-frontend /var/lib/apt/lists/lock /var/cache/apt/a
     sleep 5
 done
 echo "Apt is free. Proceeding with installation."
-# Exit immediately if a command fails
-set -e
 
-DEVICE_NAME = "google-minecraft-disk"
-MOUNT_PATH = "/home/minecraft"
-DISK_PATH= "/dev/disk/by-id/$DEVICE_NAME"
+DEVICE_NAME="google-minecraft-disk"
+MOUNT_PATH="/home/minecraft"
+DISK_PATH="/dev/disk/by-id/$DEVICE_NAME"
 
 if [ ! -d "$MOUNT_PATH" ]; then
   sudo mkdir -p "$MOUNT_PATH"
@@ -69,7 +67,7 @@ fi
 sudo apt-get install -y screen
 
 echo "Running server via screen..."
-sudo screen -d -m -S mcs java -Xmx1024M -Xms1024M -jar server.jar nogui
+sudo screen -d -m -S mcs java -Xmx2G -Xms1024M -jar server.jar nogui
 
 if [ ! -e "$MOUNT_PATH/backup.sh" ]; then
   echo "Downloading backup script"
