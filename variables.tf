@@ -12,5 +12,5 @@ variable "project_zone" {
 
 variable "version_trigger" {
   type    = string
-  default = "1"
+  default = "2"
 }
