@@ -9,7 +9,7 @@ resource "google_compute_address" "static_ipv6" {
   name               = "minecraft-ipv6"
   address_type       = "EXTERNAL"
   ip_version         = "IPV6"
-  region             = var.instance_zone
+  region             = var.project_region
   ipv6_endpoint_type = "VM"
   subnetwork         = var.instance_subnetwork
   network_tier       = "PREMIUM"
