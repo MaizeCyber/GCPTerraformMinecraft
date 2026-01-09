@@ -21,3 +21,5 @@ backup.sh script
 Set cronjob for backup script
 Configure Object Lifecycle Management 
 
+# Testing
+Currently testing backup recovery
