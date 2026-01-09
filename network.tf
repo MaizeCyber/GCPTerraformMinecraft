@@ -45,22 +45,3 @@ resource "google_compute_firewall" "allow-ssh-traffic" {
     }
   source_ranges = ["35.235.240.0/20"]
 }
-
-resource "google_storage_bucket" "gcs_backup_bucket" {
-  name           = "potato-swirl-landbridge-deaf"
-  location       = "US"
-  storage_class  = "STANDARD"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-  lifecycle_rule {
-    condition {
-      age = 60
-    }
-    action {
-      type = "Delete"
-    }
-  }
-}
-
