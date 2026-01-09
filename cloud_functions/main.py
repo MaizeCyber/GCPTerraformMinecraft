@@ -169,14 +169,14 @@ def server_information():
             ip_string = visitor_ip.replace(":", "-")
             server_address = server_ipv6
 
-        ip_status = "IP address whitelisted"
+        ip_status = "Your IP address has been whitelisted"
 
     except ValueError:
         # Handle cases where the string isn't a valid IP address
         ip_status = "Invalid IP"
 
     if visitor_ip is None:
-        print("No valid IP address, skipping firewall rule creation")
+        print("Not a valid IP address, skipping firewall rule creation")
     else:
         try:
             create_firewall_rule(firewall_rule_name=f"client-allow-{ip_string}", visitor_ip=visitor_ip)
@@ -185,7 +185,7 @@ def server_information():
         print(f"Logged Visitor IP: {visitor_ip}")
 
     server_status = start_instance()
-    return f"<p>{ip_status}. You can join at {server_address}. {server_status}</p>"
+    return f"<p>{ip_status}. Enter whatever you wish under 'Server Name' and for 'Server Address' please enter this address: -> {server_address} <-  {server_status}</p>"
 
 if __name__ == "__main__":
     # Cloud Run provides the PORT environment variable
