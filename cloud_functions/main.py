@@ -20,6 +20,7 @@ zone = os.environ['PROJECT_ZONE']
 instance_name = os.environ['INSTANCE_NAME']
 network_name = os.environ['NETWORK_NAME']
 server_ipv6 = os.environ['SERVER_IP_V6']
+server_address = None
 
 def get_instance(project_id: str = project_id, zone: str = zone, instance_name: str = instance_name) -> None:
     """
@@ -161,10 +162,12 @@ def server_information():
             visitor_ip = str(ip_obj)
             print("IPv4 Detected")
             ip_string = visitor_ip.replace(".", "-")
+            server_address = server_ip
         else:
             visitor_ip = str(ip_obj)
             print("IPv6 Detected")
             ip_string = visitor_ip.replace(":", "-")
+            server_address = server_ipv6
 
         ip_status = "IP address whitelisted"
 
@@ -182,7 +185,7 @@ def server_information():
         print(f"Logged Visitor IP: {visitor_ip}")
 
     server_status = start_instance()
-    return f"<p>{ip_status}. {server_status}</p>"
+    return f"<p>{ip_status}. You can join at {server_address}. {server_status}</p>"
 
 if __name__ == "__main__":
     # Cloud Run provides the PORT environment variable
