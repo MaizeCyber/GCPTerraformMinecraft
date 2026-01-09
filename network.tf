@@ -2,7 +2,18 @@
 resource "google_compute_network" "mynetwork" {
   name = "mynetwork"
   # RESOURCE properties go here
-  auto_create_subnetworks = "true"
+  auto_create_subnetworks = "false"
+}
+
+resource "google_compute_subnetwork" "dual_stack_subnetwork" {
+  name                     = "minecraft-subnet"
+  ip_cidr_range            = "10.0.1.0/24"
+  region                   = var.project_region
+  network                  = google_compute_network.mynetwork.id
+
+  # Enable Dual-Stack
+  stack_type               = "IPV4_IPV6"
+  ipv6_access_type         = "EXTERNAL"
 }
 
 # resource "google_compute_firewall" "allow-client-traffic" {

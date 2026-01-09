@@ -8,6 +8,11 @@ variable "server_ip" {
   description = "IP of the minecraft server instance"
 }
 
+variable "server_ip_v6" {
+  type        = string
+  description = "IPv6 of the minecraft server instance"
+}
+
 variable "project_id" {
   type        = string
   description = "Project ID"

@@ -1,5 +1,15 @@
 resource "google_compute_address" "static" {
   name = "ipv4-address"
+  address_type = "EXTERNAL"
+  region       = var.project_region
+}
+
+
+resource "google_compute_address" "static_ipv6" {
+  name         = "minecraft-ipv6"
+  address_type = "EXTERNAL"
+  ip_version   = "IPV6"
+  region       = var.project_region
 }
 
 resource "google_compute_disk" "additional_disk" {
@@ -25,10 +35,17 @@ resource "google_compute_instance" "minecraft_server" {
   }
   network_interface {
     network = var.instance_network
+    subnetwork = var.instance_subnetwork # Link to the dual-stack subnet
+    stack_type = "IPV4_IPV6"
     access_config {
       nat_ip = google_compute_address.static.address
     }
+    ipv6_access_config {
+      external_ipv6 = google_compute_address.static_ipv6.address
+      network_tier = "STANDARD"
+    }
   }
+
   attached_disk {
     source      = google_compute_disk.additional_disk.self_link
     device_name = google_compute_disk.additional_disk.name

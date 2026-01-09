@@ -26,6 +26,10 @@ resource "google_cloud_run_v2_service" "mc_join_service" {
         value = var.server_ip
       }
       env {
+        name  = "SERVER_IP_V6"
+        value = var.server_ip
+      }
+      env {
         name  = "PROJECT_NAME"
         value = var.project_id
       }

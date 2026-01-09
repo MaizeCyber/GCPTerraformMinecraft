@@ -19,6 +19,7 @@ project_id = os.environ['PROJECT_NAME']
 zone = os.environ['PROJECT_ZONE']
 instance_name = os.environ['INSTANCE_NAME']
 network_name = os.environ['NETWORK_NAME']
+server_ipv6 = os.environ['SERVER_IP_V6']
 
 def get_instance(project_id: str = project_id, zone: str = zone, instance_name: str = instance_name) -> None:
     """
@@ -103,7 +104,18 @@ def create_firewall_rule(
     allowed_ports.ports = ["25565"]
 
     firewall_rule.allowed = [allowed_ports]
-    firewall_rule.source_ranges = [f"{visitor_ip}/32"]
+
+    ip_obj = ipaddress.ip_address(visitor_ip)
+
+    if ip_obj.version == 4:
+        visitor_ip = str(ip_obj)
+        print("IPv4 Detected")
+        firewall_rule.source_ranges = [f"{visitor_ip}/32"]
+    else:
+        visitor_ip = str(ip_obj)
+        print("IPv6 Detected")
+        firewall_rule.source_ranges = [f"{visitor_ip}/128"]
+
     firewall_rule.network = network
     firewall_rule.description = f"Allowing TCP traffic on port 25565 from {visitor_ip}."
 
@@ -147,9 +159,14 @@ def server_information():
 
         if ip_obj.version == 4:
             visitor_ip = str(ip_obj)
-            ip_status = "IP address whitelisted"
+            print("IPv4 Detected")
+            ip_string = visitor_ip.replace(".", "-")
         else:
-            ip_status = "IPv6 filtered, please turn off IPv6"
+            visitor_ip = str(ip_obj)
+            print("IPv6 Detected")
+            ip_string = visitor_ip.replace(":", "-")
+
+        ip_status = "IP address whitelisted"
 
     except ValueError:
         # Handle cases where the string isn't a valid IP address
@@ -158,7 +175,6 @@ def server_information():
     if visitor_ip is None:
         print("No valid IP address, skipping firewall rule creation")
     else:
-        ip_string = visitor_ip.replace(".","-")
         try:
             create_firewall_rule(firewall_rule_name=f"client-allow-{ip_string}", visitor_ip=visitor_ip)
         except Exception as e:
