@@ -49,4 +49,16 @@ resource "google_project_iam_member" "cloud_sa_run_admin" {
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
+resource "google_project_iam_member" "cloud_sa_get_instance" {
+  project = var.project_name
+  role    = "roles/compute.instanceAdmin.v1"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
+resource "google_project_iam_member" "cloud_sa_create_firewall" {
+  project = var.project_name
+  role    = "roles/compute.securityAdmin"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
 

@@ -149,7 +149,7 @@ def server_information():
             visitor_ip = str(ip_obj)
             ip_status = "IP address whitelisted"
         else:
-            ip_status = "IPv6 filtered, please turn of IPv6"
+            ip_status = "IPv6 filtered, please turn off IPv6"
 
     except ValueError:
         # Handle cases where the string isn't a valid IP address
