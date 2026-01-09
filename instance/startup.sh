@@ -42,6 +42,22 @@ else
 
 fi
 
+# Check if the world folder exists. If not, try to restore from backup.
+if [ ! -d "$MOUNT_PATH/world" ]; then
+  echo "World folder not found. Attempting to restore from Cloud Storage..."
+
+  # Get the most recent backup folder name from the bucket
+  LATEST_BACKUP=$(gcloud storage ls gs://potato-swirl-landbridge-deaf/ | sort | tail -n 1)
+
+  if [ -z "$LATEST_BACKUP" ]; then
+    echo "No backups found in bucket. A new world will be generated."
+  else
+    echo "Restoring from $LATEST_BACKUP"
+    gcloud storage cp -R "${LATEST_BACKUP}world" "$MOUNT_PATH/"
+    echo "Restore complete."
+  fi
+fi
+
 cd /home/minecraft
 
 echo "Running package updates"
@@ -51,18 +67,29 @@ sudo apt-get install wget
 sudo apt-get install -y wget ca-certificates
 
 if ! command -v java &> /dev/null; then
-  echo "Downloading and installing java"
-  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+  echo "Java is not installed. Checking for local installer..."
+
+  # Check if the installer is already on the persistent disk
+  if [ ! -f "jdk-21_linux-x64_bin.deb" ]; then
+    echo "Installer not found. Downloading..."
+    wget -nc https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+  else
+    echo "Found existing installer on disk. Skipping download."
+  fi
+
+  echo "Installing Java from local file..."
   sudo apt-get install -y ./jdk-21_linux-x64_bin.deb
 fi
 
 java -version
 
-if [ ! -e "$MOUNT_PATH/server.jar" ]; then
-  echo "Downloading Minecraft server"
-  sudo wget https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
-  echo "eula=true" > eula.txt
+if [ ! -f "server.jar" ]; then
+  echo "Downloading Minecraft server..."
+  # -nc prevents duplicates like server.jar.1
+  wget -nc https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
 fi
+
+echo "eula=true" > eula.txt
 
 sudo apt-get install -y screen
 
