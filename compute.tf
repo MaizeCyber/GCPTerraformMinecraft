@@ -31,7 +31,7 @@ module "join-url-service" {
   run_name         = "join-url-1"
   run_region       = var.project_region
   sa_email         = google_service_account.cloud_run_sa.email
-  container_name   = "docker.io/maizecyber/mc-server-join:gcp"
+  container_name   = "docker.io/maizecyber/mc-server-join:v2"
   instance_name    = "minecraft-server-1"
   network_name     = "mynetwork"
   project_id       = var.project_name
