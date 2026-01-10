@@ -1,5 +1,5 @@
 resource "google_compute_address" "static" {
-  name = "ipv4-address"
+  name         = "ipv4-address"
   address_type = "EXTERNAL"
   region       = var.project_region
 }
@@ -16,10 +16,10 @@ resource "google_compute_address" "static_ipv6" {
 }
 
 resource "google_compute_disk" "additional_disk" {
-  name    = "minecraft-disk"
-  type    = "pd-ssd"
-  size    = 50 # Disk size in GB
-  zone    = var.instance_zone
+  name = "minecraft-disk"
+  type = "pd-ssd"
+  size = 50 # Disk size in GB
+  zone = var.instance_zone
 }
 
 resource "google_compute_instance" "minecraft_server" {
@@ -28,16 +28,16 @@ resource "google_compute_instance" "minecraft_server" {
   zone         = var.instance_zone
   machine_type = var.instance_type
 
-  tags = ["minecraft-server"]
+  tags                      = ["minecraft-server"]
   allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
-      }
+    }
   }
   network_interface {
-    network = var.instance_network
+    network    = var.instance_network
     subnetwork = var.instance_subnetwork # Link to the dual-stack subnet
     stack_type = "IPV4_IPV6"
     access_config {
@@ -45,7 +45,7 @@ resource "google_compute_instance" "minecraft_server" {
     }
     ipv6_access_config {
       external_ipv6 = google_compute_address.static_ipv6.address
-      network_tier = "PREMIUM"
+      network_tier  = "PREMIUM"
     }
   }
 
@@ -62,7 +62,7 @@ resource "google_compute_instance" "minecraft_server" {
   }
 
   metadata = {
-    shutdown-script = file("${path.module}/shutdown.sh")
+    shutdown-script       = file("${path.module}/shutdown.sh")
     backup_script_content = file("${path.module}/backup.sh")
   }
 }

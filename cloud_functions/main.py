@@ -185,7 +185,11 @@ def server_information():
         print(f"Logged Visitor IP: {visitor_ip}")
 
     server_status = start_instance()
-    return f"<p>{ip_status}. Enter whatever you wish under 'Server Name' and for 'Server Address' please enter this address: -> {server_address} <-  {server_status}</p>"
+    return (f"<p>{ip_status}.</p>"
+            f"<p>For 'Server Address' please enter this address:</p>"
+            f"<p>-> {server_address} <-</p>"
+            f"<p>{server_status}</p>")
+
 
 if __name__ == "__main__":
     # Cloud Run provides the PORT environment variable

@@ -42,6 +42,14 @@ else
 
 fi
 
+# Install Ops Agent
+if [ ! -f "add-google-cloud-ops-agent-repo.sh" ]; then
+  wget -nc https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+fi
+
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+
 # Check if the world folder exists. If not, try to restore from backup.
 if [ ! -d "$MOUNT_PATH/world" ]; then
   echo "World folder not found. Attempting to restore from Cloud Storage..."

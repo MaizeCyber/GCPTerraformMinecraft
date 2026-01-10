@@ -1,12 +1,12 @@
 provider "google" {
-  project     = var.project_id
-  region      = var.project_region
-  zone        = var.project_zone
+  project = var.project_id
+  region  = var.project_region
+  zone    = var.project_zone
 }
 
 terraform {
   backend "gcs" {
-    bucket  = "soup-burrata-cool-summer"
-    prefix  = "terraform/state"
+    bucket = "soup-burrata-cool-summer"
+    prefix = "terraform/state"
   }
 }

@@ -90,3 +90,11 @@ Implement logging alerts to catch cloud run failure, instance bottle necking, et
 Shutdown instance after period of inactivity
 Preemptible machine use for sever
 Password authentication for the join link
+Explore bucket lifestyle options
+
+## Automatic Instance Shutdown
+1. pub/sub setup
+2. cloud monitoring alert policy
+3. Function acts on pub/sub and sends shutdown signal
+
+## Ops Agent Install

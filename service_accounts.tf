@@ -37,3 +37,20 @@ resource "google_project_iam_member" "cloud_sa_create_firewall" {
   role    = "roles/compute.securityAdmin"
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
+
+resource "google_service_account" "eventarc" {
+  account_id   = "eventarc-trigger-sa"
+  display_name = "Eventarc Trigger Service Account"
+}
+
+resource "google_project_iam_member" "eventreceiver" {
+  project = var.project_id
+  role    = "roles/eventarc.eventReceiver"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
+}
+
+resource "google_project_iam_member" "runinvoker" {
+  project = var.project_id
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
+}
