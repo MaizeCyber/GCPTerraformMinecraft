@@ -55,16 +55,16 @@ resource "google_project_iam_member" "runinvoker" {
   member  = "serviceAccount:${google_service_account.eventarc.email}"
 }
 
-data "google_project" "project" {}
-
-resource "google_project_service_identity" "monitoring_notification_sa" {
-  provider = google-beta
-  project  = data.google_project.project.project_id
-  service  = "monitoring.googleapis.com"
-}
-
-resource "google_pubsub_topic_iam_member" "monitoring_publisher" {
-  topic  = google_pubsub_topic.server-cpu-topic.name
-  role   = "roles/pubsub.publisher"
-  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring.iam.gserviceaccount.com"
-}
+# data "google_project" "project" {}
+#
+# resource "google_project_service_identity" "monitoring_notification_sa" {
+#   provider = google-beta
+#   project  = data.google_project.project.project_id
+#   service  = "monitoring.googleapis.com"
+# }
+#
+# resource "google_pubsub_topic_iam_member" "monitoring_publisher" {
+#   topic  = google_pubsub_topic.server-cpu-topic.name
+#   role   = "roles/pubsub.publisher"
+#   member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring.iam.gserviceaccount.com"
+# }
