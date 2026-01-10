@@ -85,7 +85,7 @@ Object Lifecycle Management for 60 days of backups
 
 ### Other To Dos
 Use domain or subdomain with Cloud DNS to cut down on static IP cost
-Install Ops Agent on Instance
+Export minecraft logging to GCP
 Implement logging alerts to catch cloud run failure, instance bottle necking, etc.
 Shutdown instance after period of inactivity
 Preemptible machine use for sever
@@ -97,4 +97,3 @@ Explore bucket lifestyle options
 2. cloud monitoring alert policy
 3. Function acts on pub/sub and sends shutdown signal
 
-## Ops Agent Install
