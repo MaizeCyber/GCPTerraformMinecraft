@@ -63,7 +63,6 @@ jobs:
       TF_VAR_project_region: ${{ secrets.PROJECT_REGION }}
       TF_VAR_project_zone: ${{ secrets.PROJECT_ZONE }}
       TF_VAR_backup_bucket_name: ${{ secrets.BUCKET_NAME }}
-      TF_VAR_version_trigger: ${{ github.run_id }}
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
