@@ -88,7 +88,6 @@ Use domain or subdomain with Cloud DNS to cut down on static IP cost
 Export minecraft logging to GCP
 Implement logging alerts to catch cloud run failure, instance bottle necking, etc.
 Shutdown instance after period of inactivity
-Preemptible machine use for sever
 Password authentication for the join link
 Explore bucket lifestyle options
 
