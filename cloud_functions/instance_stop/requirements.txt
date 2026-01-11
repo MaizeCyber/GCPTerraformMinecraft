@@ -1,2 +1,4 @@
 functions-framework>=3.0.0
 cloudevents>=1.10.0
+google-api-core
+google-cloud-compute
