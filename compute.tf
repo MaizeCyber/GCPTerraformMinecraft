@@ -45,6 +45,8 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     max_instance_count = 1
     available_memory   = "256M"
     timeout_seconds    = 60
+    invoker_iam_disabled = true
+
     environment_variables = {
       PROJECT_ZONE  = var.project_zone
       INSTANCE_NAME = "minecraft-server-1"
