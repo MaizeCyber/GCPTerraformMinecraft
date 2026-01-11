@@ -46,9 +46,8 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     timeout_seconds    = 60
   }
 
-  # THIS block creates the Eventarc trigger automatically
   event_trigger {
-    trigger_region = "us-east4" # Keep this the same as the function location
+    trigger_region = "us-east4"
     event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic   = google_pubsub_topic.server_cpu_topic.id
     retry_policy   = "RETRY_POLICY_RETRY"
