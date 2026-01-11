@@ -23,8 +23,8 @@ data "archive_file" "function_file" {
 }
 
 resource "google_storage_bucket" "function_bucket" {
-  name     = "function-source-bucket-${var.project_id}"
-  location = "US"
+  name                        = "function-source-bucket-${var.project_id}"
+  location                    = "US"
   uniform_bucket_level_access = true
 }
 

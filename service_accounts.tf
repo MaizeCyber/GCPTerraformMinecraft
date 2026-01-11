@@ -64,14 +64,14 @@ resource "google_project_iam_member" "runinvoker" {
 data "google_project" "project" {}
 
 resource "google_pubsub_topic_iam_member" "monitoring_publisher" {
-  topic  = google_pubsub_topic.server_cpu_topic.name
-  role   = "roles/pubsub.publisher"
-  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+  topic      = google_pubsub_topic.server_cpu_topic.name
+  role       = "roles/pubsub.publisher"
+  member     = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
   depends_on = [google_monitoring_notification_channel.pubsub_channel]
 }
 
 resource "google_project_iam_member" "tokencreator" {
-  project  = data.google_project.project.id
-  role     = "roles/iam.serviceAccountTokenCreator"
-  member   = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+  project = data.google_project.project.id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
