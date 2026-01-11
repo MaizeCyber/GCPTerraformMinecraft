@@ -40,10 +40,15 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     }
   }
 
+
   service_config {
     max_instance_count = 1
     available_memory   = "256M"
     timeout_seconds    = 60
+    environment_variables = {
+      PROJECT_ZONE  = var.project_zone
+      INSTANCE_NAME = "minecraft-server-1"
+    }
   }
 
   event_trigger {
@@ -52,6 +57,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     pubsub_topic   = google_pubsub_topic.server_cpu_topic.id
     retry_policy   = "RETRY_POLICY_RETRY"
   }
+
 }
 
 
