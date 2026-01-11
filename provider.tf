@@ -9,4 +9,9 @@ terraform {
     bucket = "soup-burrata-cool-summer"
     prefix = "terraform/state"
   }
+  required_providers {
+    archive = {
+      source = "hashicorp/archive"
+    }
+  }
 }

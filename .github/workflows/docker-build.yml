@@ -24,6 +24,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./cloud_functions
+          context: ./cloud_functions/join_link
           push: true
           tags: maizecyber/mc-server-join:v3

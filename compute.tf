@@ -24,6 +24,36 @@ module "join-url-service" {
   version_trigger = var.version_trigger
 }
 
+resource "google_cloudfunctions2_function" "instance_stop_function" {
+  name        = "instance-stop-function"
+  location    = "us-east4"
+  description = "Stops instance on CPU alert"
+
+  build_config {
+    runtime     = "python310"
+    entry_point = "handle_eventarc_trigger" # Must match your Python function name
+    source {
+      storage_source {
+        bucket = google_storage_bucket.function_bucket.name
+        object = google_storage_bucket_object.function_object.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count = 1
+    available_memory   = "256M"
+    timeout_seconds    = 60
+  }
+
+  # THIS block creates the Eventarc trigger automatically
+  event_trigger {
+    trigger_region = "us-east4" # Keep this the same as the function location
+    event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic   = google_pubsub_topic.server_cpu_topic.id
+    retry_policy   = "RETRY_POLICY_RETRY"
+  }
+}
 
 
 
