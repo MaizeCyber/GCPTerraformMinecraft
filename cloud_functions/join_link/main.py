@@ -61,7 +61,7 @@ def start_instance() -> None:
 
     try:
         status = get_instance()
-        if status.get('status') == "TERMINATED":
+        if status.get('status') == "TERMINATED" or status.get('status') == "SUSPENDED":
             try:
                 thread = threading.Thread(target=send_instance_start)
                 thread.start()

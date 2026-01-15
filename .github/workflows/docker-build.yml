@@ -26,4 +26,4 @@ jobs:
         with:
           context: ./cloud_functions/join_link
           push: true
-          tags: maizecyber/mc-server-join:v3
+          tags: maizecyber/mc-server-join:v4
