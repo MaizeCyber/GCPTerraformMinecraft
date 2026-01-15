@@ -134,7 +134,7 @@ else
   #write out current crontab
   crontab -l > mycron 2>/dev/null || touch mycron
   #echo new cron into cron file
-  echo "0 0 * * * /home/minecraft/backup.sh" >> mycron
+  echo "0 */4 * * * /home/minecraft/backup.sh" >> mycron
   #install new cron file
   crontab mycron
   rm mycron

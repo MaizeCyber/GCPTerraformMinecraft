@@ -14,10 +14,10 @@ instance_name = os.environ['INSTANCE_NAME']
 def send_instance_start():
     instance_client = compute_v1.InstancesClient()
     try:
-        instance_client.stop(project=project_id, zone=zone, instance=instance_name)
-        print("Instance stop sent")
+        instance_client.suspend(project=project_id, zone=zone, instance=instance_name)
+        print("Instance suspend sent")
     except Exception as e:
-        print(f"Could not send instance stop: {str(e)}", file=sys.stderr)
+        print(f"Could not send instance suspend: {str(e)}", file=sys.stderr)
     return 0
 
 @functions_framework.cloud_event
