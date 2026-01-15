@@ -101,7 +101,7 @@ resource "google_project_iam_member" "functionartifactpermission" {
 }
 
 resource "google_service_account" "stop_function_sa" {
-  account_id   = "minecraft-server-sa"
+  account_id   = "stop-function-sa"
   display_name = "Minecraft Server Service Account"
 }
 
