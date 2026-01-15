@@ -40,7 +40,6 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     }
   }
 
-
   service_config {
     max_instance_count = 1
     available_memory   = "256M"
@@ -56,7 +55,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
   event_trigger {
     trigger_region = "us-east4"
     event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic   = google_pubsub_topic.server_cpu_topic.id
+    pubsub_topic   = google_pubsub_topic.server_empty_topic.id
     retry_policy   = "RETRY_POLICY_RETRY"
     service_account_email = google_service_account.eventarc.email
   }
