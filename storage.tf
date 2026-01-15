@@ -8,7 +8,7 @@ resource "google_storage_bucket" "gcs_backup_bucket" {
   }
   lifecycle_rule {
     condition {
-      age = 60
+      num_newer_versions = 10
     }
     action {
       type = "Delete"
