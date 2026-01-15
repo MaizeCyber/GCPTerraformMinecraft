@@ -64,6 +64,3 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
   }
 
 }
-
-
-

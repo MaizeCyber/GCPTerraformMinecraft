@@ -105,7 +105,7 @@ resource "google_service_account" "stop_function_sa" {
   display_name = "Minecraft Server Service Account"
 }
 
-resource "google_project_iam_member" "cloud_sa_get_instance" {
+resource "google_project_iam_member" "function_stop_instance" {
   project = var.project_id
   role    = "roles/compute.instanceAdmin.v1"
   member  = "serviceAccount:${google_service_account.stop_function_sa.email}"
