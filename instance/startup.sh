@@ -44,14 +44,18 @@ fi
 
 # Install Ops Agent
 if [ ! -f "add-google-cloud-ops-agent-repo.sh" ]; then
+  echo "Downloading ops agent"
   wget -nc https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 fi
 
-sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+if [ ! -f "/etc/google-cloud-ops-agent/config.yaml" ]; then
+  echo "Installing ops agent"
+  sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+fi
 
 # Add mincraft config to ops agent
 if [ ! -f "config.yaml" ]; then
-  echo "Downloading ops agent"
+  echo "Downloading ops config file"
   curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ops_config_file" \
       -H "Metadata-Flavor: Google" > /home/minecraft/config.yaml
 fi
