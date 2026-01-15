@@ -81,15 +81,10 @@ Storage: RW
 ### Backups
 backup.sh script into Cloud Storage buck
 Cronjob for the backup script
-Object Lifecycle Management for 60 days of backups
+Object Lifecycle Management for 60 days of backups, up to three version saves per day
 
 ### Other To Dos
 Use domain or subdomain with Cloud DNS to cut down on static IP cost
 Password authentication for the join link
 Automated review and removal of firewall rules
-
-## Automatic Instance Shutdown
-1. pub/sub setup
-2. cloud monitoring alert policy
-3. Function acts on pub/sub and sends shutdown signal
 
