@@ -54,6 +54,15 @@ def send_instance_start():
         print(f"Could not send instance start: {str(e)}", file=sys.stderr)
     return 0
 
+def send_instance_resume():
+    instance_client = compute_v1.InstancesClient()
+    try:
+        instance_client.resume(project=project_id, zone=zone, instance=instance_name)
+        print("Instance resume sent")
+    except Exception as e:
+        print(f"Could not send instance resume: {str(e)}", file=sys.stderr)
+    return 0
+
 def start_instance() -> None:
     """
     Starts a stopped Google Compute Engine instance (with unencrypted disks).
@@ -61,9 +70,18 @@ def start_instance() -> None:
 
     try:
         status = get_instance()
-        if status.get('status') == "TERMINATED" or status.get('status') == "SUSPENDED":
+        if status.get('status') == "TERMINATED":
             try:
                 thread = threading.Thread(target=send_instance_start)
+                thread.start()
+                print("Server successfully started")
+                return "Server Starting!"
+            except Exception as e:
+                print(f"Could not start server: {str(e)}", file=sys.stderr)
+                return "Error: Server could not be started"
+        elif status.get('status') == "SUSPENDED":
+            try:
+                thread = threading.Thread(target=send_instance_resume)
                 thread.start()
                 print("Server successfully started")
                 return "Server Starting!"
