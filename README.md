@@ -58,9 +58,14 @@ server_ipv6_address = "<your ipv6 here>"
 
 The server blocks all client connections by default. To join, visit the cloud run url provided to whitelist your IP address. Give this same url to any other users of the server. The URL should display the following once loaded:
 
-> Your IP address has been whitelisted. Enter whatever you wish under 'Server Name' and for 'Server Address' please enter this address: -> <ipv4 or ipv4> <- Current server status: RUNNING
+> Your IP address has been whitelisted. 
+> For 'Server Address' please enter this address:
+> -> SERVER_IP <- 
+> Server Starting!
 
 The URL will display the IPv4 or IPv6 address of the server depending on what the visitor connected with. Both will work for connecting. These addresses are static and should not change even if the server is stopped and restarted. Backups should be handled automatically by the startup.sh, backup.sh, and shutdown.sh scripts. You can manually review these backups in the Cloud Storage Bucket created under the TF_VAR_backup_bucket_name variable.
+
+The instance will suspend itself upon the server have no connected players. Users will need to visit the join link against to resume the server.
 
 ### Cost
 
@@ -74,9 +79,6 @@ Encryption: Google Managed Encryptions
 ### Networking
 Static External IPv4 and IPv6 Address
 Automatic firewall rule creation for user IPs which allows 25565 traffic
-
-### Security
-Storage: RW
 
 ### Backups
 backup.sh script into Cloud Storage buck
