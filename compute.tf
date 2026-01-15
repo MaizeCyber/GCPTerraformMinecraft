@@ -49,6 +49,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     environment_variables = {
       PROJECT_ZONE  = var.project_zone
       INSTANCE_NAME = "minecraft-server-1"
+      PROJECT_NAME = var.project_id
     }
   }
 
