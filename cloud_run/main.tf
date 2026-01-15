@@ -10,6 +10,10 @@ resource "google_cloud_run_v2_service" "mc_join_service" {
     labels = {
       "deployment_version" = var.version_trigger
     }
+    scaling {
+      max_instance_count = 3
+      min_instance_count = 0
+    }
     containers {
       image = var.container_name
       ports {

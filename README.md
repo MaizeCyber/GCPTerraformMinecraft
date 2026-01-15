@@ -85,6 +85,7 @@ Object Lifecycle Management for 60 days of backups, up to three version saves pe
 
 ### Other To Dos
 Use domain or subdomain with Cloud DNS to cut down on static IP cost
+Check on Cloud Run costs and find alternatives if high.
 Password authentication for the join link
 Automated review and removal of firewall rules
 
