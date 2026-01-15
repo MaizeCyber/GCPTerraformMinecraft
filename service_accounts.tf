@@ -99,3 +99,14 @@ resource "google_project_iam_member" "functionartifactpermission" {
   role    = "roles/artifactregistry.writer"
   member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
+
+resource "google_service_account" "stop_function_sa" {
+  account_id   = "minecraft-server-sa"
+  display_name = "Minecraft Server Service Account"
+}
+
+resource "google_project_iam_member" "cloud_sa_get_instance" {
+  project = var.project_id
+  role    = "roles/compute.instanceAdmin.v1"
+  member  = "serviceAccount:${google_service_account.stop_function_sa.email}"
+}

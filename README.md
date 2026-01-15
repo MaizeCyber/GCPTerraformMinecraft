@@ -89,6 +89,7 @@ Implement logging alerts to catch cloud run failure, instance bottle necking, et
 Shutdown instance after period of inactivity
 Password authentication for the join link
 Explore bucket lifestyle options
+Automated review and removal of firewall rules
 
 ## Automatic Instance Shutdown
 1. pub/sub setup

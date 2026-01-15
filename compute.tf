@@ -51,6 +51,8 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
       INSTANCE_NAME = "minecraft-server-1"
       PROJECT_NAME = var.project_id
     }
+    all_traffic_on_latest_revision = true
+    service_account_email = google_service_account.stop_function_sa.email
   }
 
   event_trigger {
