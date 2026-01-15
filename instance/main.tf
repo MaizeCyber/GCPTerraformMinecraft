@@ -64,5 +64,6 @@ resource "google_compute_instance" "minecraft_server" {
   metadata = {
     shutdown-script       = file("${path.module}/shutdown.sh")
     backup_script_content = file("${path.module}/backup.sh")
+    ops_config_file       = file("${path.module}/config.yaml")
   }
 }

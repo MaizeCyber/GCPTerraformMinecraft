@@ -1,0 +1,30 @@
+logging:
+  receivers:
+    minecraft_log:
+      type: files
+      include_paths: [/home/minecraft/logs/latest.log]
+      record_log_file_path: true
+  processors:
+    minecraft_parser:
+      type: parse_regex
+      field: message
+      # MUST BE RUBY REGEX
+      regex: '^\[(?<time>\d{2}:\d{2}:\d{2})\] \[(?<thread>[^\/]+)\/(?<severity>[^\]]+)\]: (?<message>.*)$'
+      time_key: time
+      time_format: '%H:%M:%S'
+    minecraft_severity_map:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.severity
+          map_values:
+            "INFO": "INFO"
+            "WARN": "WARNING"
+            "ERROR": "ERROR"
+            "FATAL": "CRITICAL"
+  service:
+    pipelines:
+      minecraft_pipeline:
+        receivers: [minecraft_log]
+        processors: [minecraft_severity_map, minecraft_parser]
+

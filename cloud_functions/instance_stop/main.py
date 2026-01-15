@@ -1,19 +1,15 @@
 from __future__ import annotations
 
 import sys
-import gcpport
+import os
 
 from google.cloud import compute_v1
 import functions_framework
 from cloudevents.http import CloudEvent
 
-# project_id = os.environ['PROJECT_NAME']
-# zone = os.environ['PROJECT_ZONE']
-# instance_name = os.environ['INSTANCE_NAME']
-
-project_id = 'proejct'
-zone = 'us-east4-a'
-instance_name = 'minecraft-server-1'
+project_id = os.environ['PROJECT_NAME']
+zone = os.environ['PROJECT_ZONE']
+instance_name = os.environ['INSTANCE_NAME']
 
 def send_instance_start():
     instance_client = compute_v1.InstancesClient()
@@ -37,5 +33,3 @@ def handle_eventarc_trigger(cloud_event: CloudEvent):
     send_instance_start()
 
     return "OK", 200
-
-gcpport.start_gcp_port(8080)

@@ -49,6 +49,17 @@ fi
 
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
+# Add mincraft config to ops agent
+if [ ! -f "config.yaml" ]; then
+  echo "Downloading ops agent"
+  curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ops_config_file" \
+      -H "Metadata-Flavor: Google" > /home/minecraft/config.yaml
+fi
+
+echo "Adding config.yaml file to ops agent..."
+sudo rm /etc/google-cloud-ops-agent/config.yaml
+sudo cp /home/minecraft/config.yaml /etc/google-cloud-ops-agent/
+sudo systemctl restart google-cloud-ops-agent
 
 # Check if the world folder exists. If not, try to restore from backup.
 if [ ! -d "$MOUNT_PATH/world" ]; then

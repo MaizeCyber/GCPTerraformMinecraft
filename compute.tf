@@ -31,7 +31,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
 
   build_config {
     runtime     = "python310"
-    entry_point = "handle_eventarc_trigger" # Must match your Python function name
+    entry_point = "handle_eventarc_trigger"
     source {
       storage_source {
         bucket = google_storage_bucket.function_bucket.name
@@ -45,7 +45,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     max_instance_count = 1
     available_memory   = "256M"
     timeout_seconds    = 60
-    invoker_iam_disabled = true
+    ingress_settings = "ALLOW_INTERNAL_ONLY"
 
     environment_variables = {
       PROJECT_ZONE  = var.project_zone
@@ -58,6 +58,7 @@ resource "google_cloudfunctions2_function" "instance_stop_function" {
     event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic   = google_pubsub_topic.server_cpu_topic.id
     retry_policy   = "RETRY_POLICY_RETRY"
+    service_account_email = google_service_account.eventarc.email
   }
 
 }
