@@ -83,8 +83,8 @@ def start_instance() -> None:
             try:
                 thread = threading.Thread(target=send_instance_resume)
                 thread.start()
-                print("Server successfully started")
-                return "Server Starting!"
+                print("Server successfully resumed")
+                return "Server Resuming!"
             except Exception as e:
                 print(f"Could not start server: {str(e)}", file=sys.stderr)
                 return "Error: Server could not be started"
