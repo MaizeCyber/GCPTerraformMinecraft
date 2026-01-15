@@ -8,5 +8,10 @@ resource "google_monitoring_alert_policy" "alert_policy" {
       filter = "logName=\"projects/minecraftserver-482021/logs/minecraft_log\"\njsonPayload.severity=\"INFO\"\njsonPayload.message=\"Server empty for 60 seconds, pausing\""
     }
   }
+  alert_strategy {
+    notification_rate_limit {
+      period = "300s"
+    }
+  }
   notification_channels = [google_monitoring_notification_channel.pubsub_channel.name]
 }
