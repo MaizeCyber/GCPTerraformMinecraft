@@ -3,7 +3,7 @@ module "minecraft-server-vm" {
   instance_name       = "minecraft-server-1"
   project_region      = var.project_region
   instance_zone       = var.project_zone
-  instance_type       = "e2-medium"
+  instance_type       = "e2-highcpu-8"
   instance_network    = google_compute_network.mynetwork.self_link
   instance_subnetwork = google_compute_subnetwork.dual_stack_subnetwork.self_link
   sa_email            = google_service_account.minecraft_sa.email
