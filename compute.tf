@@ -3,7 +3,7 @@ module "minecraft-server-vm" {
   instance_name       = "minecraft-server-1"
   project_region      = var.project_region
   instance_zone       = var.project_zone
-  instance_type       = "e2-highcpu-8"
+  instance_type       = "e2-highcpu-4"
   instance_network    = google_compute_network.mynetwork.self_link
   instance_subnetwork = google_compute_subnetwork.dual_stack_subnetwork.self_link
   sa_email            = google_service_account.minecraft_sa.email
@@ -26,7 +26,7 @@ module "join-url-service" {
 
 resource "google_cloudfunctions2_function" "instance_stop_function" {
   name        = "instance-stop-function"
-  location    = "us-east4"
+  location    = var.project_region
   description = "Stops instance on CPU alert"
 
   build_config {
